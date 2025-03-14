@@ -18,6 +18,13 @@ Dotpay consist of multiple resources such as:
 # Project Architecture 
 ![architecture-v1](images/architecture-v1.jpeg)
 
+# Service Specification
+## Merchant Service (API)
+
+| Method | Request URI | Use Case |
+|--------|------------|----------|
+| POST   | `api/v1/merchant/register` | Register new merchant |
+
 # Motivation
 1. Learning the ins and outs of payment gateway
 2. Practice to implement industry level code standard 
