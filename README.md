@@ -9,12 +9,11 @@ Dotpay consist of multiple resources such as:
 4. Charges
 5. Payment Intent
 
-# Consideration I have when developing dotpay
+# Consideration
 - Good DX
-- CICD Implementation
+- CICD
 - Harness value from monorepo 
-- Industry standard
-
+- Ensure codebase is industry standard
 
 # Project Architecture 
 ![architecture-v1](images/architecture-v1.jpeg)
