@@ -19,4 +19,4 @@ jobs:
         uses: actions/setup-dotnet@v4.3.1
       
       - name: Restore
-        uses: cd src/MerchantService/MerchantService.API && dotnet restore
+        run: cd src/MerchantService/MerchantService.API && dotnet restore
