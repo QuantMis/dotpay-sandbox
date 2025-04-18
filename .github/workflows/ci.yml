@@ -1,0 +1,22 @@
+name: dotpay CI process
+
+on:
+  #push: 
+  #  branches: [feat/merchart-service]
+  #pull_request:
+  #  branches: [develop, main]
+  workflow_dispatch
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout latest source
+        uses: actions/checkout@v4
+
+      - name: Setup .NET  Core SDK
+        uses: actions/setup-dotnet@v4.3.1
+      
+      - name: Restore
+        uses: cd src/MerchantService/MerchantService.API && dotnet restore
