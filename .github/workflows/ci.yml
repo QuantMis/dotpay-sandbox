@@ -1,0 +1,34 @@
+name: dotpay CI process
+
+on:
+
+  workflow_dispatch:
+  push: 
+    branches: [feat/merchart-service]
+  pull_request:
+    branches: [develop, main, feat/merchart-service]
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout latest source
+        uses: actions/checkout@v4
+
+      - name: Setup .NET  Core SDK
+        uses: actions/setup-dotnet@v4.3.1
+        with:
+          dotnet-version: '9.0.x'
+      
+      - name: Restore Dependencies
+        run: dotnet restore ./src/MerchantService/MerchatService.API
+
+      - name: Linting
+        run: dotnet format --verify-no-changes ./src/MerchantService/MerchatService.API
+
+      - name: Build
+        run: dotnet build --no-restore ./src/MerchantService/MerchatService.API 
+
+      - name: Unit Test
+        run: dotnet test --no-build --verbosity normal ./src/MerchantService/MerchatService.API
