@@ -1,11 +1,12 @@
 name: dotpay CI process
 
 on:
-  #push: 
-  #  branches: [feat/merchart-service]
-  #pull_request:
-  #  branches: [develop, main]
-  workflow_dispatch
+
+  workflow_dispatch:
+  push: 
+    branches: [feat/merchart-service]
+  pull_request:
+    branches: [develop, main, feat/merchart-service]
 
 
 jobs:
@@ -20,5 +21,11 @@ jobs:
         with:
           dotnet-version: '9.0.x'
       
-      - name: Restore
+      - name: Restore Dependencies
         run: dotnet restore src/MerchantService/MerchatService.API
+
+      - name: Linting
+        run: dotnet format --verify-no-changes 
+
+      - name: Build
+        run: dotnet build src/MerchantService/MerchatService.API
