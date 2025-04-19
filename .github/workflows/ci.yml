@@ -1,34 +1,113 @@
-name: dotpay CI process
+#name: dotpay CI process
+#
+#on:
+#
+#  workflow_dispatch:
+#  push: 
+#    branches: [feat/merchart-service, feat/kyc-service]
+#  pull_request:
+#    branches: [develop, main, feat/merchart-service, feat/kyc-service]
+#
+#
+#jobs:
+#  build:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout latest source
+#        uses: actions/checkout@v4
+#
+#      - name: Setup .NET  Core SDK
+#        uses: actions/setup-dotnet@v4.3.1
+#        with:
+#          dotnet-version: '9.0.x'
+#      
+#      - name: Restore Dependencies
+#        run: dotnet restore ./src/MerchantService/MerchatService.API
+#
+#      - name: Linting
+#        run: dotnet format --verify-no-changes ./src/MerchantService/MerchatService.API
+#
+#      - name: Build
+#        run: dotnet build --no-restore ./src/MerchantService/MerchatService.API 
+#
+#      - name: Unit Test
+#        run: dotnet test --no-build --verbosity normal ./src/MerchantService/MerchatService.API
+#
+#        name: CI
 
 on:
-
   workflow_dispatch:
-  push: 
-    branches: [feat/merchart-service]
+  push:
+    branches:
+      - feat/merchart-service
+      - feat/kyc-service
   pull_request:
-    branches: [develop, main, feat/merchart-service]
-
+    branches:
+      - develop
+      - main
+      - feat/merchart-service
+      - feat/kyc-service
 
 jobs:
-  build:
+  # 1) Determine which services changed
+  filter:
     runs-on: ubuntu-latest
+    outputs:
+      merchant: ${{ steps.paths.outputs.merchant }}
+      kyc:      ${{ steps.paths.outputs.kyc }}
     steps:
-      - name: Checkout latest source
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup .NET  Core SDK
+      - name: Path filter
+        id: paths
+        uses: dorny/paths-filter@v2
+        with:
+          filters: |
+            merchant:
+              - 'src/MerchantService/**'
+            kyc:
+              - 'src/KYCService/**'
+
+  # 2) Build & test only the changed services via a matrix
+  build:
+    needs: filter
+    runs-on: ubuntu-latest
+    # define one row per service, with the key that matches the filter output
+    strategy:
+      fail-fast: false
+      matrix:
+        service:
+          - name: MerchantService
+            filterKey: merchant
+            csproj:    src/MerchantService/MerchatService.API/MerchatService.API.csproj
+            folder:    src/MerchantService
+          - name: KYCService
+            filterKey: kyc
+            csproj:    src/KycService/KycService.csproj
+            folder:    src/KycService
+
+    # skip any matrix row whose filter flag is 'false'
+    if: ${{ needs.filter.outputs[matrix.service.filterKey] == 'true' }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET Core SDK
         uses: actions/setup-dotnet@v4.3.1
         with:
           dotnet-version: '9.0.x'
-      
-      - name: Restore Dependencies
-        run: dotnet restore ./src/MerchantService/MerchatService.API
 
-      - name: Linting
-        run: dotnet format --verify-no-changes ./src/MerchantService/MerchatService.API
+      - name: Restore Dependencies ( ${{ matrix.service.name }} )
+        run: dotnet restore ${{ matrix.service.csproj }}
 
-      - name: Build
-        run: dotnet build --no-restore ./src/MerchantService/MerchatService.API 
+      - name: Lint ( ${{ matrix.service.name }} )
+        run: dotnet format --verify-no-changes ${{ matrix.service.csproj }}
 
-      - name: Unit Test
-        run: dotnet test --no-build --verbosity normal ./src/MerchantService/MerchatService.API
+      - name: Build ( ${{ matrix.service.name }} )
+        run: dotnet build --no-restore ${{ matrix.service.csproj }}
+
+      - name: Unit Tests ( ${{ matrix.service.name }} )
+        run: dotnet test --no-build --verbosity normal ${{ matrix.service.folder }}
+
