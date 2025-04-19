@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MerchantService", "MerchantService", "{FB437CED-0C27-4683-B05B-384A34573D51}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MerchatService.API", "MerchantService\MerchatService.API\MerchatService.API.csproj", "{03479FFE-5F85-43A3-913A-6A284B910B42}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KycService", "KycService\KycService.csproj", "{186E509C-CF6B-4E75-9909-FBB9E185D3ED}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{03479FFE-5F85-43A3-913A-6A284B910B42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03479FFE-5F85-43A3-913A-6A284B910B42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03479FFE-5F85-43A3-913A-6A284B910B42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03479FFE-5F85-43A3-913A-6A284B910B42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{186E509C-CF6B-4E75-9909-FBB9E185D3ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{186E509C-CF6B-4E75-9909-FBB9E185D3ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{186E509C-CF6B-4E75-9909-FBB9E185D3ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{186E509C-CF6B-4E75-9909-FBB9E185D3ED}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{03479FFE-5F85-43A3-913A-6A284B910B42} = {FB437CED-0C27-4683-B05B-384A34573D51}
+	EndGlobalSection
+EndGlobal
