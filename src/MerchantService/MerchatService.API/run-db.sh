@@ -9,7 +9,7 @@ set +a
 docker run --name merchant-db \
   -e POSTGRES_USER=$DB_USER \
   -e POSTGRES_PASSWORD=$DB_PASS \
-  -e POSTGRES_DB=$DB_NAME \
+  -e POSTGRES_DB=$DB_PORT \
   -p $DB_PORT:5432 \
   -d postgres:17
 
