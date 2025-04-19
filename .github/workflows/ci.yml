@@ -87,27 +87,30 @@ jobs:
             csproj:    src/KycService/KycService.csproj
             folder:    src/KycService
 
-    # skip any matrix row whose filter flag is 'false'
-    if: ${{ needs.filter.outputs[matrix.service.filterKey] == 'true' }}
-
     steps:
       - name: Checkout code
+        if: ${{ needs.filter.outputs[matrix.service.filterKey] == 'true' }}
         uses: actions/checkout@v4
 
       - name: Setup .NET Core SDK
+        if: ${{ needs.filter.outputs[matrix.service.filterKey] == 'true' }}
         uses: actions/setup-dotnet@v4.3.1
         with:
           dotnet-version: '9.0.x'
 
       - name: Restore Dependencies ( ${{ matrix.service.name }} )
+        if: ${{ needs.filter.outputs[matrix.service.filterKey] == 'true' }}
         run: dotnet restore ${{ matrix.service.csproj }}
 
       - name: Lint ( ${{ matrix.service.name }} )
+        if: ${{ needs.filter.outputs[matrix.service.filterKey] == 'true' }}
         run: dotnet format --verify-no-changes ${{ matrix.service.csproj }}
 
       - name: Build ( ${{ matrix.service.name }} )
+        if: ${{ needs.filter.outputs[matrix.service.filterKey] == 'true' }}
         run: dotnet build --no-restore ${{ matrix.service.csproj }}
 
       - name: Unit Tests ( ${{ matrix.service.name }} )
+        if: ${{ needs.filter.outputs[matrix.service.filterKey] == 'true' }}
         run: dotnet test --no-build --verbosity normal ${{ matrix.service.folder }}
 
